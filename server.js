@@ -21,10 +21,18 @@ groupChatHandler(io);
 
 app.set('io', io);
 
-const DB = process.env.DATABASE.replace(
+const DB = process.env.DATABASE?.replace(
   '<PASSWORD>',
-  process.env.DATABASE_PASSWORD,
+  process.env.DATABASE_PASSWORD || '',
 );
+
+if (!DB || DB.includes('cluster.mongodb.net') || DB.includes('user:password')) {
+  console.error(
+    'DB Connection Error ❌ Invalid or placeholder DATABASE in config.env. ' +
+      'Set DATABASE to your real MongoDB Atlas URI (e.g. mongodb+srv://USER:PASSWORD@YOUR-CLUSTER.xxxxx.mongodb.net/...).'
+  );
+  process.exit(1);
+}
 
 mongoose
   .connect(DB)
