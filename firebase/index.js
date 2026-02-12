@@ -11,12 +11,7 @@ if (base64) {
   });
   module.exports = firebase;
 } else {
-  // Firebase not configured (e.g. server has no FIREBASE_SERVICE_ACCOUNT_BASE64 in config.env).
-  // Push notifications will be skipped; add the env var to enable them.
-  console.warn(
-    'Firebase: FIREBASE_SERVICE_ACCOUNT_BASE64 not set in config.env — push notifications disabled. ' +
-      'To enable: add base64-encoded service account JSON (see config.env.example).'
-  );
+  // Push notifications disabled when FIREBASE_SERVICE_ACCOUNT_BASE64 is not set (e.g. server config.env).
   module.exports = {
     messaging: () => ({
       send: async () => {
