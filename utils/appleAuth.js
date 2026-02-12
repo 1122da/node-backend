@@ -1,4 +1,4 @@
-import appleSignin from "apple-signin-auth";
+const appleSignin = require("apple-signin-auth");
 
 export async function verifyAppleIdentityToken(identityToken) {
   return appleSignin.verifyIdToken(identityToken, {
