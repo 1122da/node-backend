@@ -1,6 +1,6 @@
 // controllers/apple.controller.js
 // import User from "../models/User.js";
-import { verifyAppleIdentityToken } from "../utils/appleAuth.js";
+const verifyAppleIdentityToken = require("../utils/appleAuth.js");
 
 export const appleLogin = async (req, res) => {
   try {
