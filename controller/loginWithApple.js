@@ -2,7 +2,7 @@
 // import User from "../models/User.js";
 const verifyAppleIdentityToken = require("../utils/appleAuth.js");
 
-export const appleLogin = async (req, res) => {
+const appleLogin = async (req, res) => {
   try {
     const { identityToken } = req.body;
 
