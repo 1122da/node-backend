@@ -1,4 +1,5 @@
-require('dotenv').config({ path: './config.env' });
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, 'config.env') });
 const app = require('./app');
 const { Server } = require('socket.io');
 const http = require('http');
