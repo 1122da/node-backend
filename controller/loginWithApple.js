@@ -1,9 +1,8 @@
-// controllers/apple.controller.js
-import jwt from 'jsonwebtoken';
-// import User from "../models/User.js";
-import { verifyAppleIdentityToken } from '../utils/appleAuth.js';
+const verifyAppleIdentityToken = require('../utils/appleAuth');
+// const User = require('../models/user'); // uncomment if using User model
+// const jwt = require('jsonwebtoken');   // uncomment if using JWT
 
-export const appleLogin = async (req, res) => {
+const appleLogin = async (req, res) => {
   try {
     const { identityToken } = req.body;
 
@@ -27,7 +26,7 @@ export const appleLogin = async (req, res) => {
     // 2️⃣ Find user in DB
     // let existingUser = await User.findOne({ appleId });
 
-    // // 3️⃣ Create user if not exists
+    // 3️⃣ Create user if not exists
     // if (!existingUser) {
     //   existingUser = await User.create({
     //     appleId,
@@ -56,3 +55,6 @@ export const appleLogin = async (req, res) => {
     });
   }
 };
+
+// ✅ Export using CommonJS
+module.exports = { appleLogin };
