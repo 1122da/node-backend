@@ -1,6 +1,6 @@
 const express = require('express');
-require('dotenv').config({ path: './config.env' });
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, 'config.env') });
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
