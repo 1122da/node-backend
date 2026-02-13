@@ -99,10 +99,12 @@ exports.updating_task_based_ID = checkAsync(async (req, res, next) => {
 });
 
 exports.task_completion = async (req, res, next) => {
-
+  console.log('⭐⭐⭐⭐⭐⭐');
+  const { taskId, userId } = req.params;
+  console.log('⭐⭐⭐⭐⭐⭐', taskId, ' / ', userId);
   const task = await Task.findOneAndUpdate(
-    { _id: req.params.taskId, 'taskMembers.user': req.params.memberId },
-    { $set: { 'taskMembers.$.isTaskDone': true } },
+    { _id: req.params.taskId, 'taskMembers.user': req.params.userId },
+    { $set: { 'taskMembers.$.isTaskDone': false } },
     { new: true },
   );
   console.log('Task ===>', task);
