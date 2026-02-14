@@ -24,21 +24,10 @@ app.use((req, res, next) => {
 
 // app.use(express.json());
 
-// app.get('/apple-app-site-association', (req, res) => {
-//   res.setHeader('Content-Type', 'application/json');
-//   res.sendFile(path.join(__dirname, 'apple-app-site-association'));
-// });
-
-app.get('/.well-known/apple-app-site-association', async (req, res) => {
-  const response = await fetch(
-    'https://knickknacky-marvin-unmarvelously.ngrok-free.dev/.well-known/apple-app-site-association',
-    {
-      headers: { 'ngrok-skip-browser-warning': '1' },
-    },
-  );
-  const text = await response.text();
+// Apple App Site Association for Universal Links (deep linking) on https://api.nodeapp.us
+app.get('/.well-known/apple-app-site-association', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  res.send(text);
+  res.sendFile(path.join(__dirname, 'public', '.well-known', 'apple-app-site-association'));
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
