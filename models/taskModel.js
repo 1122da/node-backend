@@ -37,6 +37,10 @@ const taskSchema = new mongoose.Schema({
       isTaskDone: { type: Boolean, default: false },
     },
   ],
+  completedAt: {
+    type: Date,
+    default: null,
+  },
 
   groupId: String,
 });

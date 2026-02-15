@@ -98,16 +98,38 @@ exports.updating_task_based_ID = checkAsync(async (req, res, next) => {
   });
 });
 
-exports.task_completion = async (req, res, next) => {
-  console.log('⭐⭐⭐⭐⭐⭐');
-  const { taskId, userId } = req.params;
-  console.log('⭐⭐⭐⭐⭐⭐', taskId, ' / ', userId);
+exports.task_completion = checkAsync(async (req, res, next) => {
+  const { taskId, userId, groupId } = req.params;
+  const { isTaskDone } = req.body;
+
+  const updateFields = {
+    'taskMembers.$.isTaskDone': isTaskDone,
+    'taskMembers.$.completedAt': isTaskDone ? new Date() : null,
+  };
+
+  console.log(taskId, ' / ', userId, ' / ', groupId);
+
+  if (typeof isTaskDone !== 'boolean') {
+    return res.status(400).json({
+      status: 'success',
+      message: ' type of isTaskDone must be boolean',
+    });
+  }
+
   const task = await Task.findOneAndUpdate(
-    { _id: req.params.taskId, 'taskMembers.user': req.params.userId },
-    { $set: { 'taskMembers.$.isTaskDone': false } },
+    {
+      _id: req.params.taskId,
+      'taskMembers.user': req.params.userId,
+      groupId: groupId,
+    },
+    {
+      $set: updateFields,
+    },
     { new: true },
   );
+
   console.log('Task ===>', task);
+  
   if (!task) {
     return res.status(404).json({
       status: 'fail',
@@ -119,4 +141,4 @@ exports.task_completion = async (req, res, next) => {
     status: 'success',
     data: task,
   });
-};
+});
