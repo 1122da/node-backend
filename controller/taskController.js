@@ -99,27 +99,30 @@ exports.updating_task_based_ID = checkAsync(async (req, res, next) => {
 });
 
 exports.task_completion = checkAsync(async (req, res, next) => {
-  const { taskId, userId, groupId } = req.params;
-  const { isTaskDone } = req.body;
+  const { taskId, userId, groupId, isTaskDone } = req.body;
 
+  if (!taskId || !groupId || !userId) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'taskId, groupId and userId are required',
+    });
+  }
+
+  if (typeof isTaskDone !== 'boolean') {
+    return res.status(400).json({
+      status: 'fail',
+      message: ' type of isTaskDone must be boolean',
+    });
+  }
   const updateFields = {
     'taskMembers.$.isTaskDone': isTaskDone,
     'taskMembers.$.completedAt': isTaskDone ? new Date() : null,
   };
 
-  console.log(taskId, ' / ', userId, ' / ', groupId);
-
-  if (typeof isTaskDone !== 'boolean') {
-    return res.status(400).json({
-      status: 'success',
-      message: ' type of isTaskDone must be boolean',
-    });
-  }
-
   const task = await Task.findOneAndUpdate(
     {
-      _id: req.params.taskId,
-      'taskMembers.user': req.params.userId,
+      _id: taskId,
+      taskMembers: { $elemMatch: { user: userId } },
       groupId: groupId,
     },
     {
@@ -128,15 +131,12 @@ exports.task_completion = checkAsync(async (req, res, next) => {
     { new: true },
   );
 
-  console.log('Task ===>', task);
-  
   if (!task) {
     return res.status(404).json({
       status: 'fail',
       message: 'Task or member not found',
     });
   }
-
   res.status(200).json({
     status: 'success',
     data: task,

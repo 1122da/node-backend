@@ -19,7 +19,7 @@ router.patch(
 );
 // TASK COMPLETETION
 router.patch(
-  '/task_complete/:taskId/:userId/:groupId',
+  '/task_complete',
   authController.protect,
   taskController.task_completion,
 );
